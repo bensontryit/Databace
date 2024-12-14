@@ -106,7 +106,12 @@ class MainController(Admin_login, User_control, Manage_control, Add_usermanage, 
         self.ui_main.pushButton_5.clicked.connect(lambda: self.stacked_widget.setCurrentWidget(self.question_widget))
         self.ui_main.pushButton_6.clicked.connect(lambda: self.stacked_widget.setCurrentWidget(self.other_widget))
         self.ui_login.pushButton.clicked.connect(self.admin_login) # modify to judge the admin account
-        self.ui_manage.pushButton_4.clicked.connect(lambda: self.stacked_widget.setCurrentWidget(self.add_widget))
+        # self.ui_manage.pushButton_4.clicked.connect(lambda: self.stacked_widget.setCurrentWidget(self.add_widget))
+        self.ui_user_find.pushButton_4.clicked.connect(self.reset_user_info_and_return)
+        self.ui_user_find.pushButton_4.clicked.connect(self.ui_user_find.lineEdit.clear)
+        self.ui_user_find.pushButton_4.clicked.connect(self.ui_user_find.lineEdit_2.clear)
+        self.ui_manage.pushButton_5.clicked.connect(self.ui_login.lineEdit.clear)
+        self.ui_manage.pushButton_5.clicked.connect(self.ui_login.lineEdit_2.clear)
         
         self.ui_login.pushButton_3.clicked.connect(lambda: self.stacked_widget.setCurrentWidget(self.main_widget))
         self.ui_login.pushButton_3.clicked.connect(self.ui_login.lineEdit.clear)
@@ -155,6 +160,13 @@ class MainController(Admin_login, User_control, Manage_control, Add_usermanage, 
         # 執行應用程式
         self.show_main_window()
         self.app.exec_()
+
+    def reset_user_info_and_return(self):
+        # 清空用戶資料和車輛信息
+        self.ui_user_find.user_info_label.setText("")
+        self.ui_user_find.vehicle_info_label.setText("")
+        # 返回到原始頁面
+        self.stacked_widget.setCurrentWidget(self.main_widget)
 
 if __name__ == "__main__":
     # 創建控制器並運行

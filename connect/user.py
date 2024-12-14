@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets
-
+from PyQt5.QtGui import QStandardItem
+from PyQt5.QtGui import QStandardItemModel
 class User_control:
     def __init__(self, ui_user_find):
         self.ui_user_find = ui_user_find  # 保存 UI 引用
@@ -27,10 +28,18 @@ class User_control:
             self.mycursor.execute(vehicle_query, (self.ssn,))
             vehicles = self.mycursor.fetchall()
             if vehicles:
-                vehicle_info = ""
+                # 清空現有的模型數據
+                self.ui_user_find.vehicle_info_model.clear()
+                self.ui_user_find.vehicle_info_model.setHorizontalHeaderLabels(
+                    ["車輛類型", "車輛牌照", "車輛年份", "車輛月份", "車輛日期", "檢查號"]
+                )
+
                 for vehicle in vehicles:
-                    vehicle_info += f"車輛牌照: {vehicle[1]}\n"  # 假設 vehicle[1] 是車輛牌照
-                self.ui_user_find.vehicle_info_label.setText(vehicle_info)  # 顯示車輛資料
+                    items = [QStandardItem(str(field)) for field in vehicle[:6]]  # 只取前 6 個欄位
+                    self.ui_user_find.vehicle_info_model.appendRow(items)
+                    # 清空舊的 QLabel 顯示
+                # self.ui_user_find.vehicle_info_model.setText("")
+                self.ui_user_find.vehicle_info_table.setModel(self.ui_user_find.vehicle_info_model)
             else:
                 self.ui_user_find.vehicle_info_label.setText("沒有找到該用戶的車輛。")
         else:

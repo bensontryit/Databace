@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 
 class Ui_MainWindow(object):
@@ -91,13 +92,20 @@ class Ui_MainWindow(object):
         self.vehicle_info_group.setGeometry(QtCore.QRect(100, 410, 600, 150))
         self.vehicle_info_group.setTitle("用戶的車輛")
         
-        # 設定用戶車輛標籤
-        self.vehicle_info_label = QtWidgets.QLabel(self.vehicle_info_group)
-        self.vehicle_info_label.setGeometry(QtCore.QRect(10, 20, 280, 120))
-        self.vehicle_info_label.setWordWrap(True)
-        self.vehicle_info_label.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
-        self.vehicle_info_label.setStyleSheet("font-size: 12pt; color: #333;")
-        self.vehicle_info_label.setObjectName("vehicle_info_label")
+        # 新增 QTableView 來顯示車輛資訊
+        self.vehicle_info_table = QtWidgets.QTableView(self.vehicle_info_group)
+        self.vehicle_info_table.setGeometry(QtCore.QRect(10, 20, 580, 120))
+        self.vehicle_info_table.setObjectName("vehicle_info_table")
+
+        # 設定模型
+        self.vehicle_info_model = QStandardItemModel()
+        self.vehicle_info_model.setHorizontalHeaderLabels(
+            ["車輛類型", "車輛牌照", "車輛年份", "車輛月份", "車輛日期", "檢查號"]
+        )
+        self.vehicle_info_table.setModel(self.vehicle_info_model)
+
+        # 禁止編輯
+        self.vehicle_info_table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         
         # 設定主視窗的中央小工具
         MainWindow.setCentralWidget(self.centralwidget)
